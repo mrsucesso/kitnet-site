@@ -125,7 +125,7 @@
          <img width="1600" height="1200" alt="Kitnet 05 — foto 3" loading="lazy" src="../assets/kitnets/kitnet-05/kitnet-05-entrada.webp"/>
         </button>
         <button aria-label="Ver foto 4" class="" data-index="3">
-         <img width="1600" height="1200" alt="Kitnet 05 — foto 4" loading="lazy" src="../assets/kitnets/kitnet-05/kitnet-05-porta-v2.webp"/>
+         <img width="1600" height="1200" alt="Kitnet 05 — foto 4" loading="lazy" src="../assets/kitnets/kitnet-05/kitnet-05-porta.webp"/>
         </button>
         <button aria-label="Ver foto 5" class="" data-index="4">
          <img width="1600" height="1200" alt="Kitnet 05 — foto 5" loading="lazy" src="../assets/kitnets/kitnet-05/kitnet-05-sala.webp"/>
@@ -423,7 +423,7 @@
    </i>
   </a>
   <script>
-   const images=["../assets/kitnets/kitnet-05/kitnet-05-fachada-externa.webp", "../assets/kitnets/kitnet-05/kitnet-05-fachada-interna.webp", "../assets/kitnets/kitnet-05/kitnet-05-entrada.webp", "../assets/kitnets/kitnet-05/kitnet-05-porta-v2.webp", "../assets/kitnets/kitnet-05/kitnet-05-sala.webp", "../assets/kitnets/kitnet-05/kitnet-05-cozinha.webp", "../assets/kitnets/kitnet-05/kitnet-05-quarto.webp", "../assets/kitnets/kitnet-05/kitnet-05-banheiro.webp"];let index=0;const main=document.getElementById('main-image'),current=document.getElementById('current'),thumbs=[...document.querySelectorAll('.thumbs button')];function show(i){index=(i+images.length)%images.length;main.src=images[index];current.textContent=index+1;thumbs.forEach((b,n)=>b.classList.toggle('active',n===index));}document.getElementById('prev').onclick=()=>show(index-1);document.getElementById('next').onclick=()=>show(index+1);thumbs.forEach((b,n)=>b.onclick=()=>show(n));
+   const images=["../assets/kitnets/kitnet-05/kitnet-05-fachada-externa.webp", "../assets/kitnets/kitnet-05/kitnet-05-fachada-interna.webp", "../assets/kitnets/kitnet-05/kitnet-05-entrada.webp", "../assets/kitnets/kitnet-05/kitnet-05-porta.webp", "../assets/kitnets/kitnet-05/kitnet-05-sala.webp", "../assets/kitnets/kitnet-05/kitnet-05-cozinha.webp", "../assets/kitnets/kitnet-05/kitnet-05-quarto.webp", "../assets/kitnets/kitnet-05/kitnet-05-banheiro.webp"];let index=0;const main=document.getElementById('main-image'),current=document.getElementById('current'),thumbs=[...document.querySelectorAll('.thumbs button')];function show(i){index=(i+images.length)%images.length;main.src=images[index];current.textContent=index+1;thumbs.forEach((b,n)=>b.classList.toggle('active',n===index));}document.getElementById('prev').onclick=()=>show(index-1);document.getElementById('next').onclick=()=>show(index+1);thumbs.forEach((b,n)=>b.onclick=()=>show(n));
   </script>
  </body>
 </html>
