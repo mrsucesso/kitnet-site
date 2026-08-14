@@ -4,283 +4,672 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitnet Mais Top - Aluguel de Kitnets em Campo Grande/MS</title>
-    <meta name="description" content="Kitnets para alugar em Campo Grande/MS. Conforto, segurança, internet e água inclusos. Av. Aracruz - Novos Estados.">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="shortcut icon" type="image/png" href="logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-        body { font-family: 'Poppins', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
         
-        .gradient-gold {
-            background: linear-gradient(135deg, #DCA54A 0%, #D09A40 100%);
+        :root {
+            --primary-black: #000000;
+            --primary-yellow: #FFFF6F;
+            --terracotta-dark: #3D2817;
+            --terracotta-warm: #8B6F47;
+            --terracotta-light: #A0826D;
+            --white: #FFFFFF;
+            --gray-light: #D0D0D0;
         }
         
-        .card-hover {
-            transition: all 0.3s ease;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        .card-hover:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-black);
+            color: var(--white);
+        }
+        
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(160, 130, 109, 0.9);
+            color: var(--white);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-disponivel {
+            background: var(--primary-yellow);
+            color: var(--primary-black);
+        }
+        
+        .property-card {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .specs {
+            color: var(--gray-light);
+            font-size: 14px;
+            margin: 12px;
+        }
+        
+        .address {
+            color: var(--white);
+            font-size: 16px;
+            margin: 8px 12px;
+            font-weight: 500;
+        }
+        
+        .price {
+            color: var(--primary-yellow);
+            font-size: 18px;
+            font-weight: bold;
+            margin: 12px;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .value-card {
+            border: 1px solid var(--terracotta-warm);
+            border-radius: 16px;
+            padding: 32px;
+            background: rgba(139, 111, 71, 0.1);
+            text-align: center;
+        }
+        
+        .value-card h3 {
+            color: var(--white);
+            font-size: 18px;
+            margin: 16px 0;
+            font-weight: 600;
+        }
+        
+        .value-card p {
+            color: var(--gray-light);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+        
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 111, 0.2);
+            color: var(--white);
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 500;
+            text-align: left;
+            transition: background 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .faq-icon {
+            color: var(--primary-yellow);
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 20px;
+            color: var(--gray-light);
+            line-height: 1.6;
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body>
     <!-- Header -->
-    <header class="gradient-gold text-white shadow-lg fixed w-full top-0 z-50">
-        <nav class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <h1 class="text-2xl md:text-3xl font-bold">
-                    🏠 Kitnet Mais Top
-                </h1>
-                <ul class="hidden md:flex space-x-8 font-semibold">
-                    <li><a href="#inicio" class="hover:text-gray-900 transition">Início</a></li>
-                    <li><a href="#kitnets" class="hover:text-gray-900 transition">Kitnets</a></li>
-                    <li><a href="#vantagens" class="hover:text-gray-900 transition">Vantagens</a></li>
-                    <li><a href="#localizacao" class="hover:text-gray-900 transition">Localização</a></li>
-                    <li><a href="#contato" class="hover:text-gray-900 transition">Contato</a></li>
-                </ul>
+    <nav class="fixed top-0 w-full z-50 bg-black/70 backdrop-blur-sm border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="logo.png" alt="Kitnet Mais Top" class="h-16">
+                <span class="font-semibold text-white text-lg">Kitnet Mais Top</span>
             </div>
-        </nav>
-    </header>
+            
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#inicio" class="text-sm text-gray-300 hover:text-white transition">Início</a>
+                <a href="#perfil" class="text-sm text-gray-300 hover:text-white transition">Perfil</a>
+                <a href="#condicoes" class="text-sm text-gray-300 hover:text-white transition">Condições</a>
+                <a href="#kitnets" class="text-sm text-gray-300 hover:text-white transition">Kitnets</a>
+                <a href="#vantagens" class="text-sm text-gray-300 hover:text-white transition">Vantagens</a>
+                <a href="#faq" class="text-sm text-gray-300 hover:text-white transition">FAQ</a>
+                <a href="#contato" class="bg-[#FFFF6F] text-black px-5 py-2 rounded-full font-medium text-sm hover:opacity-90 transition">
+                    Contato
+                </a>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Hero Section -->
-    <section id="inicio" class="pt-24 pb-20 gradient-gold text-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl md:text-6xl font-bold mb-6">
-                    Seu Novo Lar em Campo Grande/MS
-                </h2>
-                <p class="text-xl md:text-2xl mb-8 text-gray-100">
-                    Kitnets individuais com conforto, segurança e tudo incluído!
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#kitnets" class="bg-white text-yellow-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-lg">
-                        Ver Kitnets Disponíveis
-                    </a>
-                    <a href="https://wa.me/5527981125528" target="_blank" class="bg-gray-900 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-800 transition shadow-lg">
-                        ✆ Contato WhatsApp
-                    </a>
+    <!-- Hero -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center px-6 pt-20">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 to-black z-0"></div>
+        
+        <div class="relative z-10 max-w-6xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 bg-[rgba(255,255,111,0.15)] text-white px-4 py-2 rounded-full mb-8">
+                <span class="text-[#FFFF6F] text-xl">●</span>
+                Direto com proprietário
+            </div>
+            
+            <h1 class="serif text-5xl md:text-6xl lg:text-7xl font-normal mb-6 leading-tight">
+                Seu novo lar no<br>
+                <span class="text-[#FFFF6F] italic">Novos Estados</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-12">
+                Campo Grande-MS · Kitnets confortáveis e bem localizadas
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#kitnets" class="bg-[#FFFF6F] text-black px-8 py-4 rounded-full font-semibold inline-flex items-center justify-center gap-2 hover:opacity-90 transition">
+                    Ver Kitnets Disponíveis
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="https://wa.me/556781227323?text=Olá!%20Vi%20o%20site" 
+                   target="_blank"
+                   class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold inline-flex items-center justify-center gap-2 hover:bg-white/10 transition">
+                    <i class="fab fa-whatsapp text-[#25D366]"></i>
+                    <span class="text-[#25D366]">WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="py-20 px-6 bg-black">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="serif text-3xl md:text-4xl font-normal text-white mb-6">
+                Mais do que aluguel — encontre seu espaço ideal em Campo Grande
+            </h2>
+            <p class="text-gray-400 text-lg leading-relaxed">
+                Oferecemos kitnets individuais no bairro Novos Estados, com internet e água inclusos. 
+                Sem burocracia, sem imobiliária. Direto comigo, seu proprietário.
+            </p>
+        </div>
+    </section>
+
+    <!-- Perfil de Locação -->
+    <section class="py-16 px-6 bg-black border-t border-white/10">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 bg-[rgba(255,255,111,0.15)] text-white px-4 py-2 rounded-full mb-6">
+                <span class="text-[#FFFF6F] text-xl">●</span>
+                Perfil de Locação
+            </div>
+            <h2 class="serif text-3xl md:text-4xl font-normal mb-6">
+                <span class="text-white">Este é o seu lugar se você</span><br>
+                <span class="text-[#FFFF6F] italic">mora sozinho ou é solteiro</span>
+            </h2>
+            <div class="space-y-4 text-gray-300 max-w-2xl mx-auto">
+                <div class="flex items-center justify-center text-lg">
+                    <i class="fas fa-user text-[#FFFF6F] mr-3"></i>
+                    <span>Pessoas solteiras ou que moram sozinhas</span>
+                </div>
+                <div class="flex items-center justify-center text-lg">
+                    <i class="fas fa-times text-red-400 mr-3"></i>
+                    <span>Não aceitamos casais, crianças ou animais de estimação</span>
+                </div>
+                <div class="flex items-center justify-center text-lg">
+                    <i class="fas fa-motorcycle text-[#FFFF6F] mr-3"></i>
+                    <span>Vaga exclusiva para motocicletas (sem carros)</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Vantagens -->
-    <section id="vantagens" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
-                ⭐ Por Que Escolher a Kitnet Mais Top?
-            </h2>
+    <!-- Condicoes -->
+    <section class="py-16 px-6" style="background: linear-gradient(180deg, #3D2817 0%, #8B6F47 100%);">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 bg-[rgba(255,255,111,0.15)] text-white px-4 py-2 rounded-full mb-6">
+                    <span class="text-[#FFFF6F] text-xl">●</span>
+                    Condições de Contratação
+                </div>
+                <h2 class="serif text-3xl md:text-4xl font-normal mb-3">
+                    <span class="text-white">Tudo claro desde o início para</span><br>
+                    <span class="text-[#FFFF6F] italic">sua segurança</span>
+                </h2>
+            </div>
             
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="card-hover bg-gradient-to-br from-yellow-50 to-yellow-100 p-8 rounded-xl text-center">
-                    <div class="text-5xl mb-4">🌐</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-900">Internet Incluída</h3>
-                    <p class="text-gray-700">WiFi livre sem custo adicional</p>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="bg-black/30 p-6 rounded-2xl backdrop-blur-sm">
+                    <h3 class="text-xl font-semibold text-[#FFFF6F] mb-4 flex items-center">
+                        <i class="fas fa-clipboard-list mr-3"></i>
+                        Documentação Necessária
+                    </h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>• RG ou CNH</li>
+                        <li>• CPF</li>
+                        <li>• Comprovante de renda</li>
+                        <li>• E-mail e telefone celular</li>
+                        <li>• Verificação Serasa</li>
+                    </ul>
                 </div>
-
-                <div class="card-hover bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-xl text-center">
-                    <div class="text-5xl mb-4">💧</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-900">Água Livre</h3>
-                    <p class="text-gray-700">Água incluída no valor</p>
+                
+                <div class="bg-black/30 p-6 rounded-2xl backdrop-blur-sm">
+                    <h3 class="text-xl font-semibold text-[#FFFF6F] mb-4 flex items-center">
+                        <i class="fas fa-handshake mr-3"></i>
+                        Condições Financeiras
+                    </h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>• Contrato anual (12 meses)</li>
+                        <li>• Caução de 1 mês (mesmo valor do aluguel)</li>
+                        <li>• Pagamento posterior (mora, depois paga)</li>
+                        <li>• Sem fiador (se Serasa limpa)</li>
+                        <li>• Seguro da unidade: R$35/ano</li>
+                    </ul>
                 </div>
-
-                <div class="card-hover bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-xl text-center">
-                    <div class="text-5xl mb-4">🔒</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-900">Segurança</h3>
-                    <p class="text-gray-700">Ambiente seguro e tranquilo</p>
-                </div>
-
-                <div class="card-hover bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-xl text-center">
-                    <div class="text-5xl mb-4">👤</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-900">Individual</h3>
-                    <p class="text-gray-700">Moradia individual</p>
-                </div>
-
-                <div class="card-hover bg-gradient-to-br from-red-50 to-red-100 p-8 rounded-xl text-center">
-                    <div class="text-5xl mb-4">🏠</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-900">Direto c/ Proprietário</h3>
-                    <p class="text-gray-700">Sem imobiliária, sem burocracia</p>
-                </div>
-
-                <div class="card-hover bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-xl text-center">
-                    <div class="text-5xl mb-4">✨</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-900">Conforto</h3>
-                    <p class="text-gray-700">Ambientes bem cuidados</p>
-                </div>
-
-                <div class="card-hover bg-gradient-to-br from-pink-50 to-pink-100 p-8 rounded-xl text-center">
-                    <div class="text-5xl mb-4">⭐</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-900">Solteiros(as)</h3>
-                    <p class="text-gray-700">Exclusivo para pessoas solteiras</p>
-                </div>
-
-                <div class="card-hover bg-gradient-to-br from-indigo-50 to-indigo-100 p-8 rounded-xl text-center">
-                    <div class="text-5xl mb-4">📍</div>
-                    <h3 class="text-xl font-bold mb-2 text-gray-900">Localização</h3>
-                    <p class="text-gray-700">Novos Estados - Av. Aracruz</p>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <div class="inline-block bg-[rgba(255,255,111,0.1)] p-4 rounded-2xl border border-[#FFFF6F]/20">
+                    <p class="text-gray-300 mb-2">Internet básica como <strong class="text-[#FFFF6F]">bônus por adimplência</strong></p>
+                    <p class="text-sm text-gray-400">Caso seu perfil atenda aos requisitos, marcamos a visita!</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Kitnets -->
-    <section id="kitnets" class="py-16 bg-gray-100">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
-                🏠 Kitnets Disponíveis
-            </h2>
-
-            <div class="max-w-3xl mx-auto">
-                <div class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-8">
-                    <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 p-6 text-white">
-                        <h3 class="text-2xl font-bold mb-2">Kitnet Individual</h3>
-                        <p class="text-yellow-100">Moradia completa e acolhedora</p>
+    <section id="kitnets" class="py-20 px-6" style="background: linear-gradient(180deg, #8B6F47 0%, #3D2817 100%); border-radius: 40px 40px 0 0;">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 bg-[rgba(255,255,111,0.15)] text-white px-4 py-2 rounded-full mb-6">
+                    <span class="text-[#FFFF6F] text-xl">●</span>
+                    Disponível agora
+                </div>
+                
+                <h2 class="serif text-4xl md:text-5xl font-normal mb-3">
+                    <span class="text-white">Kitnets que você</span><br>
+                    <span class="text-[#FFFF6F] italic">não pode perder</span>
+                </h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Kitnet 02 - DISPONÍVEL -->
+                <div class="property-card">
+                    <div class="relative h-64 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                        <i class="fas fa-home text-6xl text-gray-600"></i>
+                        <span class="badge badge-disponivel">DISPONÍVEL</span>
                     </div>
-                    
-                    <div class="p-8">
-                        <div class="grid md:grid-cols-2 gap-6 mb-8">
-                            <div class="flex items-start">
-                                <span class="text-2xl mr-3">✅</span>
-                                <div>
-                                    <h4 class="font-bold text-gray-900">Internet WiFi</h4>
-                                    <p class="text-gray-600">Incluso no valor</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="text-2xl mr-3">✅</span>
-                                <div>
-                                    <h4 class="font-bold text-gray-900">Água</h4>
-                                    <p class="text-gray-600">Incluso no valor</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="text-2xl mr-3">✅</span>
-                                <div>
-                                    <h4 class="font-bold text-gray-900">Segurança</h4>
-                                    <p class="text-gray-600">Ambiente tranquilo</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="text-2xl mr-3">✅</span>
-                                <div>
-                                    <h4 class="font-bold text-gray-900">Individual</h4>
-                                    <p class="text-gray-600">Só para você</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border-t pt-6">
-                            <p class="text-sm text-gray-600 mb-4">
-                                💡 <strong>Importante:</strong> Exclusivo para pessoas solteiras
-                            </p>
-                            <div class="flex flex-col sm:flex-row gap-4">
-                                <a href="https://wa.me/5527981125528?text=Olá!%20Tenho%20interesse%20na%20Kitnet%20Mais%20Top" target="_blank" class="flex-1 bg-green-500 text-white text-center px-6 py-3 rounded-lg font-bold hover:bg-green-600 transition">
-                                    📱 WhatsApp: (27) 98112-5528
-                                </a>
-                                <a href="#localizacao" class="flex-1 border-2 border-yellow-500 text-yellow-600 text-center px-6 py-3 rounded-lg font-bold hover:bg-yellow-50 transition">
-                                    📍 Ver Localização
-                                </a>
-                            </div>
-                        </div>
+                    <p class="specs">20m² • 3 peças • Sem mobília</p>
+                    <p class="address">Av. Aracruz, Novos Estados</p>
+                    <p class="price">R$ 850/mês</p>
+                    <div class="px-3 pb-3">
+                        <a href="https://wa.me/556781227323?text=Interesse%20Kitnet%2002" 
+                           target="_blank"
+                           class="w-full bg-[#FFFF6F] text-black px-4 py-3 rounded-full font-semibold text-sm inline-flex items-center justify-center gap-2 hover:opacity-90 transition">
+                            <i class="fab fa-whatsapp text-[#25D366]"></i>
+                            Alugar Agora
+                        </a>
                     </div>
+                </div>
+
+                <!-- Kitnet 01 -->
+                <a href="kitnets/kitnet-01.html" class="property-card block">
+                    <div class="relative h-64 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                        <i class="fas fa-home text-6xl text-gray-600"></i>
+                        <span class="badge">ALUGADA</span>
+                    </div>
+                    <p class="specs">23m² • 3 peças • Sem mobília</p>
+                    <p class="address">Av. Aracruz, Novos Estados</p>
+                    <p class="price">R$ 850/mês</p>
+                </a>
+
+                <!-- Kitnet 03 -->
+                <div class="property-card">
+                    <div class="relative h-64 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                        <i class="fas fa-home text-6xl text-gray-600"></i>
+                        <span class="badge">ALUGADA</span>
+                    </div>
+                    <p class="specs">20m² • 3 peças • Sem mobília</p>
+                    <p class="address">Av. Aracruz, Novos Estados</p>
+                    <p class="price">R$ 850/mês</p>
+                </div>
+
+                <!-- Kitnet 04 -->
+                <div class="property-card">
+                    <div class="relative h-64 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                        <i class="fas fa-home text-6xl text-gray-600"></i>
+                        <span class="badge">ALUGADA</span>
+                    </div>
+                    <p class="specs">20m² • 3 peças • Mobiliada</p>
+                    <p class="address">Av. Aracruz, Novos Estados</p>
+                    <p class="price">R$ 850/mês</p>
+                </div>
+
+                <!-- Kitnet 05 -->
+                <div class="property-card">
+                    <div class="relative h-64 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                        <i class="fas fa-home text-6xl text-gray-600"></i>
+                        <span class="badge">ALUGADA</span>
+                    </div>
+                    <p class="specs">18m² • 2 peças • Mobiliada</p>
+                    <p class="address">Av. Aracruz, Novos Estados</p>
+                    <p class="price">R$ 850/mês</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Localização -->
-    <section id="localizacao" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
-                📍 Localização Privilegiada
-            </h2>
-
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-gradient-to-br from-yellow-50 to-orange-50 p-8 rounded-2xl shadow-lg mb-8">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">🏘️ Bairro Novos Estados</h3>
-                    <p class="text-lg text-gray-700 mb-4">
-                        <strong>Endereço:</strong> Av. Aracruz - Novos Estados, Campo Grande/MS
-                    </p>
-                    <p class="text-gray-700 mb-6">
-                        Região tranquila, com fácil acesso a comércio, transporte público e principais vias da cidade.
-                    </p>
-                    <a href="https://maps.app.goo.gl/g83GgCaPGNhKVMW87" target="_blank" class="inline-block bg-blue-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-600 transition">
-                        🗺️ Abrir no Google Maps
-                    </a>
+    <!-- Vantagens -->
+    <section id="vantagens" class="py-20 px-6 bg-black">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="flex justify-center mb-8">
+                    <img src="logo.png" alt="Kitnet Mais Top" class="h-24 opacity-90">
+                </div>
+                <div class="inline-flex items-center gap-2 bg-[rgba(255,255,111,0.15)] text-white px-4 py-2 rounded-full mb-6">
+                    <span class="text-[#FFFF6F] text-xl">●</span>
+                    Nossas vantagens
+                </div>
+                <h2 class="serif text-4xl md:text-5xl font-normal mb-3">
+                    <span class="text-white">O que faz cada</span><br>
+                    <span class="text-[#FFFF6F] italic">mudança perfeita</span>
+                </h2>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="icon"><i class="fas fa-wifi"></i></div>
+                    <h3>Internet Incluída</h3>
+                    <p>WiFi livre sem custo adicional para você ficar sempre conectado</p>
                 </div>
 
-                <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-xl">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3752.741802634689!2d-54.63715!3d-20.44445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9486e7c8c8c8c8c8%3A0x1!2sAv.%20Aracruz%20-%20Novos%20Estados%2C%20Campo%20Grande%20-%20MS!5e0!3m2!1spt-BR!2sbr!4v1234567890"
-                        width="100%" 
-                        height="100%" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy">
-                    </iframe>
+                <div class="value-card">
+                    <div class="icon"><i class="fas fa-tint"></i></div>
+                    <h3>Água Livre</h3>
+                    <p>Água incluída no valor do aluguel, sem surpresas na conta</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Lugar Seguro</h3>
+                    <p>Condomínio bem fechado, monitoramento</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="icon"><i class="fas fa-couch"></i></div>
+                    <h3>Opções Mobiliadas</h3>
+                    <p>Kitnets com e sem mobília disponíveis para sua comodidade</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <h3>IPTU Incluído</h3>
+                    <p>IPTU já incluído no valor do aluguel, sem custos extras</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="icon"><i class="fas fa-soap"></i></div>
+                    <h3>Lavanderia</h3>
+                    <p>Lavanderia com máquina compartilhada</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3>Excelente Localização</h3>
+                    <p>Localização estratégica na região</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="icon"><i class="fas fa-store"></i></div>
+                    <h3>Comércio Próximo</h3>
+                    <p>Supermercados, farmácias e comércio a poucos minutos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-20 px-6" style="background: linear-gradient(180deg, #8B6F47 0%, #3D2817 100%);">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 bg-[rgba(255,255,111,0.15)] text-white px-4 py-2 rounded-full mb-6">
+                    <span class="text-[#FFFF6F] text-xl">●</span>
+                    FAQ
+                </div>
+                <h2 class="serif text-4xl md:text-5xl font-normal mb-3">
+                    <span class="text-white">Respostas claras para</span><br>
+                    <span class="text-[#FFFF6F] italic">dúvidas comuns</span>
+                </h2>
+            </div>
+            
+            <div class="space-y-2">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Quais contas estão incluídas no aluguel?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Internet (WiFi) e água estão inclusos no valor do aluguel. Apenas a energia elétrica é à parte.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Qual a documentação necessária?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Documentos pessoais (RG, CPF), comprovante de renda e referências. O processo é simples e direto.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>As kitnets são mobiliadas?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Temos opções com e sem mobília. Entre em contato para saber a disponibilidade atual.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Posso visitar antes de alugar?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sim! Agende uma visita pelo WhatsApp. Será um prazer mostrar as kitnets disponíveis.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Tem vaga para carros?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Não, apenas vagas para motos. O estacionamento é exclusivo para motocicletas.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Qual o prazo do contrato?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>O contrato de locação é anual (12 meses).</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Como funciona a energia elétrica?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>A energia elétrica é dividida entre os moradores e cobrada à parte do aluguel.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contato -->
-    <section id="contato" class="py-16 gradient-gold text-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-8">
-                    📞 Entre em Contato
+    <section id="contato" class="py-20 px-6 bg-black">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="serif text-3xl md:text-4xl font-normal mb-6">
+                    <span class="text-white">Comece sua próxima</span><br>
+                    <span class="text-[#FFFF6F] italic">mudança agora</span>
                 </h2>
-                <p class="text-xl mb-8">
-                    Tire suas dúvidas e agende sua visita!
+                <p class="text-gray-400 mb-8 leading-relaxed max-w-2xl mx-auto">
+                    Entre em contato pelo WhatsApp e agende sua visita. Estamos prontos para ajudar!
                 </p>
+            </div>
 
-                <div class="grid md:grid-cols-2 gap-6 mb-8">
-                    <a href="https://wa.me/5527981125528" target="_blank" class="bg-green-500 hover:bg-green-600 text-white p-6 rounded-xl transition shadow-lg">
-                        <div class="text-4xl mb-2">📱</div>
-                        <h3 class="font-bold text-xl mb-2">WhatsApp</h3>
-                        <p>(27) 98112-5528</p>
-                    </a>
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <!-- Esquerda - Informações -->
+                <div>
+                    <div class="space-y-6 mb-8">
+                        <div>
+                            <p class="text-[#FFFF6F] font-semibold mb-2 text-lg">Horário de atendimento</p>
+                            <p class="text-white text-lg">Segunda-Sábado: 8:00-20:00</p>
+                        </div>
+                        
+                        <div>
+                            <p class="text-[#FFFF6F] font-semibold mb-2 text-lg">Localização</p>
+                            <p class="text-white text-lg">Av. Aracruz com Sr. do Bonfim<br>Novos Estados, Campo Grande-MS</p>
+                        </div>
 
-                    <a href="https://www.instagram.com/kitnetmaistop" target="_blank" class="bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white p-6 rounded-xl transition shadow-lg">
-                        <div class="text-4xl mb-2">📸</div>
-                        <h3 class="font-bold text-xl mb-2">Instagram</h3>
-                        <p>@kitnetmaistop</p>
-                    </a>
+                        <div>
+                            <p class="text-[#FFFF6F] font-semibold mb-2 text-lg">Contato</p>
+                            <a href="https://wa.me/556781227323?text=Olá!%20Vi%20o%20site" 
+                               target="_blank"
+                               class="text-white text-lg hover:text-[#FFFF6F] transition inline-flex items-center gap-2">
+                                <i class="fab fa-whatsapp text-[#25D366]"></i>
+                                (67) 8122-7323
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <a href="https://instagram.com/kitnetmaistop" target="_blank" class="text-white hover:text-[#FFFF6F] transition text-2xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://facebook.com/kitnetmaistop" target="_blank" class="text-white hover:text-[#FFFF6F] transition text-2xl">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
                 </div>
-
-                <a href="https://www.facebook.com/share/17ooxmFhQB/" target="_blank" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-bold transition shadow-lg">
-                    📘 Facebook - Kitnet Mais Top
-                </a>
+                
+                <!-- Direita - Mapa -->
+                <div>
+                    <div class="rounded-2xl overflow-hidden shadow-2xl border border-[#8B6F47]">
+                        <iframe 
+                            src="https://www.google.com/maps?q=Avenida+Aracruz+com+Avenida+Senhor+do+Bonfim,+Novos+Estados,+Campo+Grande+MS&output=embed&z=15"
+                            width="100%" 
+                            height="400" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <p class="text-center text-gray-400 text-sm mt-4">
+                        <i class="fas fa-map-marker-alt text-[#FFFF6F]"></i>
+                        Bem Próximo à Esquina Av. Aracruz com Sr. do Bonfim
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-300 py-8">
-        <div class="container mx-auto px-4 text-center">
-            <p class="mb-2">© 2026 Kitnet Mais Top - Todos os direitos reservados</p>
-            <p class="text-sm text-gray-500">
-                Av. Aracruz - Novos Estados, Campo Grande/MS
-            </p>
-            <div class="mt-4 space-x-4">
-                <a href="https://wa.me/5527981125528" class="hover:text-white transition">WhatsApp</a>
-                <span>•</span>
-                <a href="https://www.instagram.com/kitnetmaistop" class="hover:text-white transition">Instagram</a>
-                <span>•</span>
-                <a href="https://kitnet.mais.top" class="hover:text-white transition">kitnet.mais.top</a>
+    <footer class="bg-black border-t border-white/10 py-8 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="flex items-center justify-center gap-2 mb-3 opacity-60">
+                <img src="logo.png" alt="Kitnet Mais Top" class="h-6">
+                <span class="font-medium text-white text-sm">Kitnet Mais Top</span>
             </div>
+            <p class="text-gray-500 text-sm">© 2026 - Todos os direitos reservados</p>
+            <p class="text-gray-400 text-xs mt-2">Site desenvolvido pela <a href="https://sucesso.net.br" target="_blank" class="text-white hover:text-yellow-400 transition">Agência do Sucesso Empresarial</a></p>
         </div>
     </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/556781227323?text=Olá!%20Vim%20pelo%20site" 
+       target="_blank"
+       class="fixed bottom-6 right-6 bg-[#3D2817] w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50 border-2 border-[#0d5c0d]">
+        <i class="fab fa-whatsapp text-2xl text-[#25D366]"></i>
+    </a>
 
     <script>
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Fecha todos
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Abre o clicado se estava fechado
+                if (!isActive) {
+                    faqItem.classList.add('active');
                 }
             });
         });
