@@ -1,0 +1,27 @@
+name: Deploy CF Pages (gate aprovado)
+
+# Gate de aprovação (decisão Maurício 2026-08-24):
+# publica SOMENTE quando um PR é mergeado com a label "deploy-approved".
+# Push direto em main NUNCA publica.
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  deploy:
+    if: >
+      github.event.pull_request.merged == true &&
+      contains(github.event.pull_request.labels.*.name, 'deploy-approved')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{{{ secrets.CLOUDFLARE_API_TOKEN }}}}
+          accountId: ${{{{ secrets.CLOUDFLARE_ACCOUNT_ID }}}}
+          command: pages deploy . --project-name=kitnet-mais-top-git --branch=main --commit-dirty=true
