@@ -3,10 +3,30 @@ name: Deploy CF Pages (gate aprovado)
 # Gate de aprovação (decisão Maurício 2026-08-24):
 # publica SOMENTE quando um PR é mergeado com a label "deploy-approved".
 # Push direto em main NUNCA publica.
+#
+# Correções de 17/11/2026 — o gate estava inalcançável por três motivos
+# independentes, e as três execuções anteriores (24/08, 06/10, 14/11) falharam:
+#
+#   1. Interpolação escrita com chaves quádruplas em vez de ${{ ... }}.
+#      O valor chegava literal e o wrangler ficava sem credencial.
+#
+#   2. Publicava no projeto kitnet-mais-top-git, que serve apenas
+#      kitnet-mais-top-git.pages.dev. O domínio kitnet.mais.top é servido pelo
+#      projeto kitnet-mais-top. Mesmo rodando, não atualizaria o site.
+#
+#   3. A label "deploy-approved" não existia no repositório, então a condição
+#      do job nunca poderia ser satisfeita.
+#
+# IMPORTANTE: o evento pull_request usa o workflow do branch BASE. Alterações
+# aqui só valem para PRs mergeados DEPOIS de este arquivo estar em main.
 
 on:
   pull_request:
     types: [closed]
+
+concurrency:
+  group: pages-deploy-kitnet
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -19,9 +39,27 @@ jobs:
       pull-requests: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{{{ secrets.CLOUDFLARE_API_TOKEN }}}}
-          accountId: ${{{{ secrets.CLOUDFLARE_ACCOUNT_ID }}}}
-          command: pages deploy . --project-name=kitnet-mais-top-git --branch=main --commit-dirty=true
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy .
+            --project-name=kitnet-mais-top
+            --branch=main
+            --commit-dirty=true
+
+      - name: Conferir o domínio público
+        run: |
+          # Deploy com sucesso não prova que o domínio serve o conteúdo novo:
+          # o projeto recebe upload direto e o alias de produção leva alguns
+          # segundos. Falha aqui se kitnet.mais.top não responder 200.
+          sleep 12
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 \
+                 "https://kitnet.mais.top/kitnets/?ci=${GITHUB_RUN_ID}")
+          echo "kitnet.mais.top/kitnets/ -> HTTP ${code}"
+          test "${code}" = "200"
