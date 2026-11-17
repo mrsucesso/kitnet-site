@@ -56,3 +56,31 @@ Evidência via API Cloudflare:
 Criado em: 2026-08-14
 Handoff por: Kimi Work
 Próximo responsável: Hermes
+
+---
+
+## RESOLVIDO em 17/11/2026
+
+O diagnóstico original deste handoff ("Cloudflare Pages não detecta pushes")
+estava certo no sintoma e incompleto na causa. Havia **dois** projetos:
+
+| Projeto | Domínio | Origem |
+|---|---|---|
+| `kitnet-mais-top` | **kitnet.mais.top** | upload direto (sem Git) |
+| `kitnet-mais-top-git` | só o `.pages.dev` | integração Git, auto-deploy |
+
+A integração Git funcionava — no projeto errado. O domínio real nunca foi
+publicado por push.
+
+Correções aplicadas:
+
+1. `.github/workflows/deploy-pages.yml` passou a publicar em `kitnet-mais-top`,
+   com a interpolação de secrets corrigida (estava com chaves quádruplas) e um
+   passo final que exige HTTP 200 em `kitnet.mais.top`.
+2. Criada a label `deploy-approved`, que não existia — sem ela a condição do
+   gate nunca podia ser verdadeira.
+3. Auto-deploy do projeto sombra desligado: ele publicava a cada push, sem
+   gate, numa URL pública e indexável (conteúdo duplicado).
+
+**Como publicar hoje:** PR com a label `deploy-approved` e merge. Push direto em
+`main` não publica — comportamento agora real, não só documentado.
